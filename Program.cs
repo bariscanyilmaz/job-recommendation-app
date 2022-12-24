@@ -1,8 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+using JobRecommendationApp.Models;
+using JobRecommendationApp.Repositories;
+using JobRecommendationApp.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDbContext>(opt=>{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+});
+
+builder.Services.AddTransient<QuestionRepository>();
+builder.Services.AddTransient<EntryRepository>();
+builder.Services.AddTransient<QuestionService>();
+builder.Services.AddTransient<EntryService>();
 
 var app = builder.Build();
 
