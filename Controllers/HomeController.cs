@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JobRecommendationApp.Controllers
 {
+    [ApiController]
     [Route("[controller]")]
     public class HomeController:ControllerBase
     {
@@ -16,8 +17,8 @@ namespace JobRecommendationApp.Controllers
             _entryService=entryService;
         }
 
-        [HttpGet("[action]")]
-        public IQueryable<Question> Index(){
+        [HttpGet]
+        public IQueryable<Question> Get(){
             return _questionService.GetAll();
         }
 
