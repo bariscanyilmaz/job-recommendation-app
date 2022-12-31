@@ -14,8 +14,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt=>{
 
 builder.Services.AddTransient<QuestionRepository>();
 builder.Services.AddTransient<EntryRepository>();
+builder.Services.AddTransient<JobRepository>();
+
 builder.Services.AddTransient<QuestionService>();
 builder.Services.AddTransient<EntryService>();
+builder.Services.AddTransient<JobService>();
 
 var app = builder.Build();
 
