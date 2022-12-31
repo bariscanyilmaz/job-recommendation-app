@@ -15,6 +15,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatButtonModule } from "@angular/material/button";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatTableModule } from "@angular/material/table";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
@@ -41,7 +42,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatPaginatorModule,
     MatButtonModule,
     MatButtonToggleModule,
-    NgxChartsModule
+    NgxChartsModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
