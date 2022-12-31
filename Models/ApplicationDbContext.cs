@@ -12,6 +12,7 @@ namespace JobRecommendationApp.Models
 
         public DbSet<Question> Questions { get; set; }
         public DbSet<Entry> Entries { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
