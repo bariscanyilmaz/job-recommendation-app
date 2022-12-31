@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { from } from 'rxjs';
+import { from, tap } from 'rxjs';
+import { Job } from '../models/job';
 import { Question } from '../models/question';
 
 @Component({
@@ -18,13 +19,15 @@ export class HomeComponent implements OnInit {
   conventionalScore = 0;
   
   questions: Question[] = [];
+  jobs: Job[] = [];
+  jobColumns=['name','score']
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
 
   dataSource: Question[] = [];
 
-
+  showJobs:boolean=false;
   showPie:boolean=false;
   single: any[];
   view: [number,number]= [700, 400];
@@ -70,7 +73,7 @@ export class HomeComponent implements OnInit {
   }
 
   getQuestions() {
-    this.http.get<Question[]>(this.baseUrl + 'home').subscribe(result => {
+    this.http.get<Question[]>(this.baseUrl + 'home/questions').subscribe(result => {
       this.questions = result
       this.dataSource = this.questions.slice(0, 10);
     });
@@ -113,9 +116,6 @@ export class HomeComponent implements OnInit {
         {
           "name": "Social",
           "value": this.socialScore
-        }, {
-          "name": "Investigation",
-          "value": this.investigationScore
         },
         {
           "name": "Enterprising",
@@ -129,5 +129,21 @@ export class HomeComponent implements OnInit {
         
       }
     });
+  }
+
+  listJobs(){
+    this.http.get<Job[]>(this.baseUrl+"home/jobs").subscribe({
+      next:(x)=>{
+        this.jobs=x;
+        this.jobs.forEach(j=>{
+          j.score=(j.artistic*this.artisticScore)+(j.conventional*this.conventionalScore)+
+          (j.enterprising*this.enterprisingScore)+(j.investigation*this.investigationScore)+(j.realistic*this.realisticScore)+(j.social*this.socialScore)
+        })
+      },
+      complete:()=>{
+        this.jobs.sort((a,b)=>b.score-a.score);
+        this.showJobs=true;
+      }
+    })
   }
 }
