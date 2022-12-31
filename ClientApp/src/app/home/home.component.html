@@ -14,15 +14,18 @@
 <mat-paginator [length]="questions.length" [pageSize]="10" (page)="onPageChange($event)"></mat-paginator>
 <button mat-button color="primary" (click)="checkState()">Kaydet</button>
 
-<div *ngIf="showPie">
-  <ngx-charts-pie-chart [view]="view" [results]="single" [gradient]="gradient" [legend]="showLegend"
-    [labels]="showLabels" [doughnut]="isDoughnut">
-  </ngx-charts-pie-chart>
+<div *ngIf="showPie" class="stats">
+  <div class="chart">
+    <ngx-charts-pie-chart [view]="view" [results]="single" [customColors]="colorScheme" [legend]="showLegend"
+      [labels]="showLabels" [doughnut]="isDoughnut">
+    </ngx-charts-pie-chart>
 
-  <button mat-button color="primary" (click)="listJobs()">Jobs</button>
-  <div *ngIf="showJobs">
+    <button mat-button color="primary" (click)="listJobs()">Jobs</button>
+  </div>
+  <div *ngIf="showJobs" class="jobs">
+
     <table mat-table [dataSource]="jobs" class="mat-elevation-z8">
-      
+
       <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -39,5 +42,10 @@
       <tr mat-row *matRowDef="let row; columns: jobColumns;"></tr>
 
     </table>
+    <div class="entry-form">
+      <mat-label>Önerilen liste tatmin edici mi?</mat-label>
+        <mat-checkbox class="example-margin" [(ngModel)]="isSatisfied">Evet</mat-checkbox>
+      <button mat-button color="primary" (click)="saveEntry()">Kaydet</button>
+    </div>
   </div>
 </div>

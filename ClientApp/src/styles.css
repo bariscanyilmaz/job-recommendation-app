@@ -15,5 +15,27 @@ code {
   border-color: #1861ac;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.stats {
+  display: flex;
+}
+
+.jobs{
+  display: flex;
+  column-gap: 10px;
+}
+
+.entry-form{
+  display: flex;
+  flex-direction: column;
+
+}

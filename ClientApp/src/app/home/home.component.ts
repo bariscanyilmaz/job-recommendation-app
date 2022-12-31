@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { from, tap } from 'rxjs';
+import { Entry } from '../models/entry';
 import { Job } from '../models/job';
 import { Question } from '../models/question';
 
@@ -17,20 +18,20 @@ export class HomeComponent implements OnInit {
   socialScore = 0;
   enterprisingScore = 0;
   conventionalScore = 0;
-  
+
   questions: Question[] = [];
   jobs: Job[] = [];
-  jobColumns=['name','score']
+  jobColumns = ['name', 'score']
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
 
   dataSource: Question[] = [];
-
-  showJobs:boolean=false;
-  showPie:boolean=false;
+  isSatisfied = false;
+  showJobs: boolean = false;
+  showPie: boolean = false;
   single: any[];
-  view: [number,number]= [700, 400];
+  view: [number, number] = [700, 400];
 
   gradient: boolean = true;
   showLegend: boolean = true;
@@ -38,9 +39,19 @@ export class HomeComponent implements OnInit {
   isDoughnut: boolean = false;
   legendPosition: string = 'below';
 
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA','#ABABAB','#B1C49D']
-  };
+  colorScheme = [{
+    name: 'Relistic', value: '#FFAE00'
+  }, {
+    name: 'Investigation', value: '#634A00'
+  }, {
+    name: 'Artistic', value: '#383416'
+  }, {
+    name: 'Social', value: '#0C7D74'
+  }, {
+    name: 'Enterprising', value: '#0F353D'
+  }, {
+    name: 'Conventional', value: '#B1C49D'
+  }]
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private _formBuilder: FormBuilder) {
 
@@ -100,7 +111,7 @@ export class HomeComponent implements OnInit {
       error: (e) => {
 
       },
-       complete: () => {
+      complete: () => {
         this.single = [{
           "name": "Relistic",
           "value": this.realisticScore
@@ -125,25 +136,42 @@ export class HomeComponent implements OnInit {
           "name": "Conventional",
           "value": this.conventionalScore
         }]
-        this.showPie=true;
-        
+        this.showPie = true;
+
       }
     });
   }
 
-  listJobs(){
-    this.http.get<Job[]>(this.baseUrl+"home/jobs").subscribe({
-      next:(x)=>{
-        this.jobs=x;
-        this.jobs.forEach(j=>{
-          j.score=(j.artistic*this.artisticScore)+(j.conventional*this.conventionalScore)+
-          (j.enterprising*this.enterprisingScore)+(j.investigation*this.investigationScore)+(j.realistic*this.realisticScore)+(j.social*this.socialScore)
+  listJobs() {
+    this.http.get<Job[]>(this.baseUrl + "home/jobs").subscribe({
+      next: (x) => {
+        this.jobs = x;
+        this.jobs.forEach(j => {
+          j.score = (j.artistic * this.artisticScore) + (j.conventional * this.conventionalScore) +
+            (j.enterprising * this.enterprisingScore) + (j.investigation * this.investigationScore) + (j.realistic * this.realisticScore) + (j.social * this.socialScore)
         })
       },
-      complete:()=>{
-        this.jobs.sort((a,b)=>b.score-a.score);
-        this.showJobs=true;
+      complete: () => {
+        this.jobs = this.jobs.sort((a, b) => b.score - a.score).slice(0, 10);
+        this.showJobs = true;
       }
     })
+  }
+  saveEntry() {
+    let entry = {
+      id:0,
+      realistic: this.realisticScore,
+      artistic: this.artisticScore,
+      conventional: this.conventionalScore,
+      enterprising: this.enterprisingScore,
+      investigation: this.investigationScore,
+      social: this.socialScore
+    } as Entry;
+
+
+    this.http.post(this.baseUrl + 'home/addentry', entry).subscribe(x=>{
+      this.showPie=false;
+    });
+
   }
 }
