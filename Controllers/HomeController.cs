@@ -10,15 +10,17 @@ namespace JobRecommendationApp.Controllers
     {
         private readonly QuestionService _questionService;
         private readonly EntryService _entryService;
+        private readonly JobService _jobService;
 
-        public HomeController(QuestionService questionService,EntryService entryService)
+        public HomeController(QuestionService questionService,EntryService entryService,JobService jobService)
         {
             _questionService=questionService;
             _entryService=entryService;
+            _jobService=jobService;
         }
 
-        [HttpGet]
-        public IQueryable<Question> Get(){
+        [HttpGet("[action]")]
+        public IQueryable<Question> Questions(){
             return _questionService.GetAll();
         }
 
@@ -29,6 +31,10 @@ namespace JobRecommendationApp.Controllers
             return entry;
         }
 
+        [HttpGet("[action]")]
+        public IQueryable<Job> Jobs(){
+            return _jobService.GetAll();           
+        }
     }
 
 
