@@ -40,17 +40,17 @@ export class HomeComponent implements OnInit {
   legendPosition: string = 'below';
 
   colorScheme = [{
-    name: 'Relistic', value: '#FFAE00'
+    name: 'Gerçekçi', value: '#FFAE00'
   }, {
-    name: 'Investigation', value: '#634A00'
+    name: 'Araştırmacı', value: '#634A00'
   }, {
-    name: 'Artistic', value: '#383416'
+    name: 'Artistik', value: '#383416'
   }, {
-    name: 'Social', value: '#0C7D74'
+    name: 'Sosyal', value: '#0C7D74'
   }, {
-    name: 'Enterprising', value: '#0F353D'
+    name: 'Girişimci', value: '#0F353D'
   }, {
-    name: 'Conventional', value: '#B1C49D'
+    name: 'Geleneksel', value: '#B1C49D'
   }]
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private _formBuilder: FormBuilder) {
@@ -113,27 +113,27 @@ export class HomeComponent implements OnInit {
       },
       complete: () => {
         this.single = [{
-          "name": "Relistic",
+          "name": "Gerçekçi",
           "value": this.realisticScore
         },
         {
-          "name": "Investigation",
+          "name": "Araştırmacı",
           "value": this.investigationScore
         },
         {
-          "name": "Artistic",
+          "name": "Artistik",
           "value": this.artisticScore
         },
         {
-          "name": "Social",
+          "name": "Sosyal",
           "value": this.socialScore
         },
         {
-          "name": "Enterprising",
+          "name": "Girişimci",
           "value": this.enterprisingScore
         },
         {
-          "name": "Conventional",
+          "name": "Geleneksel",
           "value": this.conventionalScore
         }]
         this.showPie = true;
@@ -159,18 +159,27 @@ export class HomeComponent implements OnInit {
   }
   saveEntry() {
     let entry = {
-      id:0,
+      id: 0,
       realistic: this.realisticScore,
       artistic: this.artisticScore,
       conventional: this.conventionalScore,
       enterprising: this.enterprisingScore,
       investigation: this.investigationScore,
-      social: this.socialScore
+      social: this.socialScore,
+      isSatisfied: this.isSatisfied
     } as Entry;
 
 
-    this.http.post(this.baseUrl + 'home/addentry', entry).subscribe(x=>{
-      this.showPie=false;
+    this.http.post(this.baseUrl + 'home/addentry', entry).subscribe({
+      next: (x) => {
+        this.showPie = false;
+        this.isSatisfied = false;
+      },
+      complete:()=>{
+        this.questions.forEach(q=>{
+
+        })
+      }
     });
 
   }

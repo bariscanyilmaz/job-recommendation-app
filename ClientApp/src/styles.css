@@ -25,8 +25,24 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.content{
+  display:flex;
+  flex-direction: column;
+}
+
+.question-actions{
+  margin-bottom: 12px;
+}
+
 .stats {
   display: flex;
+  margin-bottom: 12px;
+}
+
+@media screen and (max-width: 700px) {
+  .stats {
+    flex-direction: column;
+  }
 }
 
 .jobs{
