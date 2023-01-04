@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   secondFormGroup: FormGroup;
 
   dataSource: Question[] = [];
-  isSatisfied = false;
+
   showJobs: boolean = false;
   showPie: boolean = false;
   single: any[];
@@ -157,7 +157,7 @@ export class HomeComponent implements OnInit {
       }
     })
   }
-  saveEntry() {
+  saveEntry(isSatisfied:boolean) {
     let entry = {
       id: 0,
       realistic: this.realisticScore,
@@ -166,14 +166,14 @@ export class HomeComponent implements OnInit {
       enterprising: this.enterprisingScore,
       investigation: this.investigationScore,
       social: this.socialScore,
-      isSatisfied: this.isSatisfied
+      isSatisfied: isSatisfied
     } as Entry;
 
 
     this.http.post(this.baseUrl + 'home/addentry', entry).subscribe({
       next: (x) => {
         this.showPie = false;
-        this.isSatisfied = false;
+        this.showJobs = false;
       },
       complete:()=>{
         this.questions.forEach(q=>{

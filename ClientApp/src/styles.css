@@ -55,3 +55,8 @@ body {
   flex-direction: column;
 
 }
+
+.actions{
+  display: flex;
+  column-gap: 5px;
+}
